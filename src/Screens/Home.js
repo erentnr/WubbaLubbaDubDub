@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Dimensions,
   FlatList,
@@ -8,11 +8,24 @@ import {
   View,
   Text,
 } from 'react-native';
-import data from '../data.json'
+import axios from 'axios';
 
 const { width, height } = Dimensions.get('window');
 
 function Home () {
+
+  const [data, setData] = useState();
+
+  useEffect(() => {
+    axios({
+      method:'get',
+      baseURL: 'https://rickandmortyapi.com/api/',
+      url:'/character',
+    }).then((response) => {
+      setData(response.data.results)
+    })
+  }, []);
+
 
   function getStatus ({item}) {
     if (item.status==='Alive') {
