@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import {
   Dimensions,
   FlatList,
@@ -9,23 +9,16 @@ import {
   Text,
 } from 'react-native';
 import axios from 'axios';
+import { connect } from 'react-redux';
+import { getList } from '../actions'
 
 const { width, height } = Dimensions.get('window');
 
-function Home () {
-
-  const [data, setData] = useState();
+function Home (props) {
 
   useEffect(() => {
-    axios({
-      method:'get',
-      baseURL: 'https://rickandmortyapi.com/api/',
-      url:'/character',
-    }).then((response) => {
-      setData(response.data.results)
-    })
+    props.getList()
   }, []);
-
 
   function getStatus ({item}) {
     if (item.status==='Alive') {
@@ -70,7 +63,7 @@ function Home () {
   return (
     <SafeAreaView style={styles.containerView}>
       <FlatList
-        data={data}
+        data={props.list}
         renderItem={renderItem}
         keyExtractor={item => item.id.toString()}/>
     </SafeAreaView>
@@ -143,4 +136,9 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Home;
+const mapStateToProps = ({ listResponse }) => {
+    const { loadingList, list } = listResponse;
+    return { loadingList, list };
+};
+
+export default connect(mapStateToProps, { getList })(Home);
