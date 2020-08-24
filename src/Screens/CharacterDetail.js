@@ -18,40 +18,40 @@ const { width, height } = Dimensions.get('window');
 function CharacterDetail (props) {
 
   useEffect(() => {
-    props.getDetail(props.params)
+    props.getDetail(props.route.params)
   }, []);
 
-  console.log(character)
+  let chr = props.character
 
-  function getStatus (character) {
-    if (character.status==='Alive') {
+  function getStatus (chr) {
+    if (chr.status==='Alive') {
       return <View style={styles.roundAlive}/>
-    } else if (character.status==='Dead') {
+    } else if (chr.status==='Dead') {
       return <View style={styles.roundDead}/>
-    } else if (character.status==='unknown'){
+    } else if (chr.status==='unknown'){
       return <View style={styles.roundUnknown}/>
     }
   }
 
-  function getInfo (character) {
-    if (item.type === '') {
+  function getInfo (chr) {
+    if (chr.type === '') {
       return <Text style={styles.info}>-</Text>
     } else {
-      return <Text style={styles.info}>{character.type}</Text>
+      return <Text style={styles.info}>{chr.type}</Text>
     }
   }
 
-  function getLocation (character) {
-    if (typeof character.location !== 'undefined'){
-      return <Text style={styles.info}>{character.location.name}</Text>
+  function getLocation (chr) {
+    if (typeof chr.location !== 'undefined'){
+      return <Text style={styles.info}>{chr.location.name}</Text>
     } else {
       return <Text style={styles.info}>-</Text>
     }
   }
 
-  function getImage (item) {
-    if (character.image) {
-      return {uri:character.image}
+  function getImage (chr) {
+    if (chr.image) {
+      return {uri:chr.image}
     } else {
       return require('../img/dummy.png')
     }
@@ -66,19 +66,19 @@ function CharacterDetail (props) {
       <View style={styles.imageView}>
         <Image
           style={styles.image}
-          source={getImage(character)}
+          source={getImage(chr)}
         />
       </View>
       <View style={styles.detailsView}>
-        <Text style={styles.name}>{character.name}</Text>
+        <Text style={styles.name}>{chr.name}</Text>
         <View style={styles.statusView}>
-          {getStatus(character)}
-          <Text style={styles.status}>{character.status} - {character.species}</Text>
+          {getStatus(chr)}
+          <Text style={styles.status}>{chr.status} - {chr.species}</Text>
         </View>
         <Text style={styles.infoTitle}>Last known location:</Text>
-        {getLocation(character)}
+        {getLocation(chr)}
         <Text style={styles.infoTitle}>Type:</Text>
-        {getInfo(character)}
+        {getInfo(chr)}
       </View>
       <View style={styles.removeImageView}>
         <Image
